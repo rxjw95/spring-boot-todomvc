@@ -2,16 +2,12 @@ package guide.springboot.sample.tasks;
 
 import lombok.Getter;
 
-import java.util.UUID;
-
 @Getter
-public class Task {
-    private final UUID id;
+public class TaskAttribute {
     private final String details;
     private final TaskStatus status;
 
-    Task(final UUID id, final String details, final TaskStatus status) {
-        this.id = id;
+    TaskAttribute(final String details, final TaskStatus status) {
         this.details = details;
         this.status = status;
     }

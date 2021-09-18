@@ -4,9 +4,7 @@ import guide.springboot.sample.tasks.TaskStatus;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -16,6 +14,7 @@ import java.util.UUID;
 public class TaskEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String details;
     private TaskStatus status;
