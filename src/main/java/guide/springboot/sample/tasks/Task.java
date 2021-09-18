@@ -10,7 +10,7 @@ public class Task {
     private final String details;
     private final TaskStatus status;
 
-    Task(final UUID id, final String details, final TaskStatus status) {
+    public Task(final UUID id, final String details, final TaskStatus status) {
         this.id = id;
         this.details = details;
         this.status = status;

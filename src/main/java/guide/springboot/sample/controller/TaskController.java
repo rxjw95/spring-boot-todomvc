@@ -2,10 +2,10 @@ package guide.springboot.sample.controller;
 
 
 import guide.springboot.sample.tasks.Task;
+import guide.springboot.sample.tasks.TaskInsertAttribute;
 import guide.springboot.sample.tasks.TaskService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Locale;
@@ -20,6 +20,13 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    TaskIdResponse create(@RequestBody final TaskCreateRequest taskCreateRequest) {
+        TaskInsertAttribute taskInsertAttribute = new TaskInsertAttribute(taskCreateRequest.getDetails());
+        return new TaskIdResponse(taskService.insert(taskInsertAttribute).toString());
+    }
+
     @GetMapping
     List<TaskResponse> retrieveAll() {
         final var tasks = taskService.selectAll();
@@ -28,6 +35,8 @@ public class TaskController {
                 .map(TaskController::toTaskResponse)
                 .collect(Collectors.toUnmodifiableList());
     }
+
+
 
     static TaskResponse toTaskResponse(final Task task) {
         return new TaskResponse(

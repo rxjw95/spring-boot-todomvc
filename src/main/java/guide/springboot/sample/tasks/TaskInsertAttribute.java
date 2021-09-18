@@ -6,7 +6,7 @@ import lombok.Getter;
 public class TaskInsertAttribute {
     private final String details;
 
-    TaskInsertAttribute(final String details) {
+    public TaskInsertAttribute(final String details) {
         this.details = details;
     }
 }
