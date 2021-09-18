@@ -26,7 +26,11 @@ dependencies {
     implementation 'com.h2database:h2'
     implementation 'org.thymeleaf:thymeleaf'
     implementation 'org.thymeleaf:thymeleaf-spring5'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
+    testCompileOnly 'org.projectlombok:lombok:1.18.20'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.apache.commons:commons-lang3'
 }
