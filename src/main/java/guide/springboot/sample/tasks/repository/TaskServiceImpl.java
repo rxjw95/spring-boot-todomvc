@@ -33,8 +33,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Optional<Task> select(UUID id) {
-        return Optional.empty();
+    public Optional<TaskAttribute> select(UUID id) {
+        final var taskEntity = taskRepository.findById(id);
+        return taskEntity.map(TaskServiceImpl::toTaskAttribute);
     }
 
     @Override
@@ -54,5 +55,9 @@ public class TaskServiceImpl implements TaskService {
 
     static Task toTask(final TaskEntity taskEntity) {
         return new Task(taskEntity.getId(), taskEntity.getDetails(), taskEntity.getStatus());
+    }
+
+    static TaskAttribute toTaskAttribute(final TaskEntity taskEntity) {
+        return new TaskAttribute(taskEntity.getDetails(), taskEntity.getStatus());
     }
 }
