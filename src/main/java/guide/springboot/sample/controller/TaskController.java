@@ -53,15 +53,28 @@ public class TaskController {
         final var taskId = UUID.fromString(taskIdString);
         final var taskAttribute =
                 new TaskAttribute(taskUpdateRequest.getDetails(),
-                TaskStatus.valueOf(taskUpdateRequest.getStatus().toUpperCase(Locale.ENGLISH)));
+                                toTaskStatus(taskUpdateRequest.getStatus()));
 
         final var updatedTaskAttribute = taskService.update(taskId, taskAttribute);
 
         return toTaskAttributeResponse(updatedTaskAttribute);
     }
 
+    @PatchMapping("/{id}")
+    TaskAttributeResponse patch(@PathVariable("id") final String taskIdString,
+                                @RequestBody final TaskPatchRequest taskPatchRequest) {
+        final var taskId = UUID.fromString(taskIdString);
+        final var taskAttribute =
+                new TaskAttribute(taskPatchRequest.getDetails(),
+                                toTaskStatus(taskPatchRequest.getStatus()));
+
+        final var patchedTaskAttribute = taskService.patch(taskId, taskAttribute);
+
+        return toTaskAttributeResponse(patchedTaskAttribute);
+    }
+
     @DeleteMapping("/{id}")
-    void remove(@PathVariable("id")final String taskIdString) {
+    void remove(@PathVariable("id") final String taskIdString) {
         final var taskId = UUID.fromString(taskIdString);
         taskService.delete(taskId);
     }
@@ -79,4 +92,11 @@ public class TaskController {
                 task.getStatus().name().toLowerCase(Locale.ENGLISH));
     }
 
+    static TaskStatus toTaskStatus(final String status) {
+        try{
+            return TaskStatus.valueOf(status.toUpperCase(Locale.ENGLISH));
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

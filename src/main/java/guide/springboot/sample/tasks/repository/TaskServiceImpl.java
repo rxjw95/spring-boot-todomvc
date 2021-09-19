@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static java.util.Objects.requireNonNullElse;
+
 /*
 * TaskService 구현체 <-> 레파지토리
 * */
@@ -47,7 +49,18 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskAttribute patch(UUID id, TaskAttribute taskAttribute) {
-        return null;
+        final var taskEntity = taskRepository.findById(id);
+        final var patchedEntity =
+                taskEntity.map(task -> new TaskEntity(
+                    task.getId(),
+                    requireNonNullElse(taskAttribute.getDetails(), task.getDetails()),
+                    requireNonNullElse(taskAttribute.getStatus(), task.getStatus())
+                )
+            ).orElseThrow();
+
+        final var updatedEntity = taskRepository.save(patchedEntity);
+
+        return toTaskAttribute(updatedEntity);
     }
 
     @Override
