@@ -1,10 +1,7 @@
 package guide.springboot.sample.controller;
 
 
-import guide.springboot.sample.tasks.Task;
-import guide.springboot.sample.tasks.TaskAttribute;
-import guide.springboot.sample.tasks.TaskInsertAttribute;
-import guide.springboot.sample.tasks.TaskService;
+import guide.springboot.sample.tasks.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +46,26 @@ public class TaskController {
         return ResponseEntity.of(taskAttribute.map(TaskController::toTaskAttributeResponse));
     }
 
+    @PutMapping("/{id}")
+    TaskAttributeResponse update(@PathVariable("id") final String taskIdString,
+                                 @RequestBody final TaskUpdateRequest taskUpdateRequest) {
+
+        final var taskId = UUID.fromString(taskIdString);
+        final var taskAttribute =
+                new TaskAttribute(taskUpdateRequest.getDetails(),
+                TaskStatus.valueOf(taskUpdateRequest.getStatus().toUpperCase(Locale.ENGLISH)));
+
+        final var updatedTaskAttribute = taskService.update(taskId, taskAttribute);
+
+        return toTaskAttributeResponse(updatedTaskAttribute);
+    }
+
+    @DeleteMapping("/{id}")
+    void remove(@PathVariable("id")final String taskIdString) {
+        final var taskId = UUID.fromString(taskIdString);
+        taskService.delete(taskId);
+    }
+
     static TaskResponse toTaskResponse(final Task task) {
         return new TaskResponse(
                 task.getId().toString(),
@@ -61,4 +78,5 @@ public class TaskController {
                 task.getDetails(),
                 task.getStatus().name().toLowerCase(Locale.ENGLISH));
     }
+
 }

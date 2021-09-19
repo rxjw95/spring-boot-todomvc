@@ -40,7 +40,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskAttribute update(UUID id, TaskAttribute taskAttribute) {
-        return null;
+        final var taskEntity = new TaskEntity(id, taskAttribute.getDetails(), taskAttribute.getStatus());
+        final var updatedEntity = taskRepository.save(taskEntity);
+        return toTaskAttribute(updatedEntity);
     }
 
     @Override
@@ -50,7 +52,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void delete(UUID id) {
-
+        taskRepository.deleteById(id);
     }
 
     static Task toTask(final TaskEntity taskEntity) {
