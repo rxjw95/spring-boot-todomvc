@@ -48,7 +48,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskAttribute patch(UUID id, TaskAttribute taskAttribute) {
+    public TaskAttribute patch(UUID id, TaskPatchAttribute taskAttribute) {
         final var taskEntity = taskRepository.findById(id);
         final var patchedEntity =
                 taskEntity.map(task -> new TaskEntity(
@@ -65,7 +65,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void delete(UUID id) {
-        taskRepository.deleteById(id);
+        if(taskRepository.existsById(id)) {
+            taskRepository.deleteById(id);
+        }
     }
 
     static Task toTask(final TaskEntity taskEntity) {

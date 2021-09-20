@@ -13,6 +13,6 @@ public interface TaskService {
     List<Task> selectAll();
     Optional<TaskAttribute> select(UUID id);
     TaskAttribute update(UUID id, TaskAttribute taskAttribute);
-    TaskAttribute patch(UUID id, TaskAttribute taskAttribute);
+    TaskAttribute patch(UUID id, TaskPatchAttribute taskAttribute);
     void delete(UUID id);
 }

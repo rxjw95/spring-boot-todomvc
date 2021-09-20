@@ -1,6 +1,7 @@
 package guide.springboot.sample.controller;
 
 
+
 import guide.springboot.sample.tasks.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,7 +66,7 @@ public class TaskController {
                                 @RequestBody final TaskPatchRequest taskPatchRequest) {
         final var taskId = UUID.fromString(taskIdString);
         final var taskAttribute =
-                new TaskAttribute(taskPatchRequest.getDetails(),
+                new TaskPatchAttribute(taskPatchRequest.getDetails(),
                                 toTaskStatus(taskPatchRequest.getStatus()));
 
         final var patchedTaskAttribute = taskService.patch(taskId, taskAttribute);
