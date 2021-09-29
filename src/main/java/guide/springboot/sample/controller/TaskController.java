@@ -1,7 +1,6 @@
 package guide.springboot.sample.controller;
 
 
-
 import guide.springboot.sample.tasks.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,10 +73,30 @@ public class TaskController {
         return toTaskAttributeResponse(patchedTaskAttribute);
     }
 
+    @PatchMapping
+    void patchAll(@RequestBody final List<TaskPatchAllRequest> taskPatchAllRequest) {
+        final var taskList =
+                taskPatchAllRequest
+                .stream()
+                .map(request -> new TaskPatchAllAttribute(
+                        UUID.fromString(request.getId()),
+                        request.getDetails(),
+                        toTaskStatus(request.getStatus()))
+                ).collect(Collectors.toList());
+
+        taskService.patchAll(taskList);
+    }
+
     @DeleteMapping("/{id}")
     void remove(@PathVariable("id") final String taskIdString) {
         final var taskId = UUID.fromString(taskIdString);
         taskService.delete(taskId);
+    }
+
+    @PutMapping
+    void removeAll(@RequestBody final List<TaskDeleteRequest> taskIdStringList) {
+        final var taskIdList = taskIdStringList.stream().map(taskIdString -> UUID.fromString(taskIdString.getId())).collect(Collectors.toList());
+        taskService.deleteAll(taskIdList);
     }
 
     static TaskResponse toTaskResponse(final Task task) {
@@ -100,4 +119,5 @@ public class TaskController {
             return null;
         }
     }
+
 }

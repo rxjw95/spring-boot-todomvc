@@ -2,7 +2,9 @@ package guide.springboot.sample.tasks.repository;
 
 import guide.springboot.sample.tasks.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -68,6 +70,25 @@ public class TaskServiceImpl implements TaskService {
         if(taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
         }
+    }
+
+    @Override
+    public void deleteAll(List<UUID> taskIdList) {
+        taskIdList.forEach(id -> {
+            if(taskRepository.existsById(id)) {
+                taskRepository.deleteById(id);
+            }
+        } );
+    }
+
+    @Override
+    public void patchAll(List<TaskPatchAllAttribute> tasks) {
+        var taskEntities = tasks.stream().map(task -> new TaskEntity(
+                task.getId(),
+                task.getDetails(),
+                task.getStatus()
+        )).collect(Collectors.toUnmodifiableList());
+        taskRepository.saveAll(taskEntities);
     }
 
     static Task toTask(final TaskEntity taskEntity) {
