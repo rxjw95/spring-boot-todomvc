@@ -73,15 +73,6 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void deleteAll(List<UUID> taskIdList) {
-        taskIdList.forEach(id -> {
-            if(taskRepository.existsById(id)) {
-                taskRepository.deleteById(id);
-            }
-        } );
-    }
-
-    @Override
     public void patchAll(List<TaskPatchAllAttribute> tasks) {
         var taskEntities = tasks.stream().map(task -> new TaskEntity(
                 task.getId(),

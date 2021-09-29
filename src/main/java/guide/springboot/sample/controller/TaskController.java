@@ -93,12 +93,6 @@ public class TaskController {
         taskService.delete(taskId);
     }
 
-    @PutMapping
-    void removeAll(@RequestBody final List<TaskDeleteRequest> taskIdStringList) {
-        final var taskIdList = taskIdStringList.stream().map(taskIdString -> UUID.fromString(taskIdString.getId())).collect(Collectors.toList());
-        taskService.deleteAll(taskIdList);
-    }
-
     static TaskResponse toTaskResponse(final Task task) {
         return new TaskResponse(
                 task.getId().toString(),

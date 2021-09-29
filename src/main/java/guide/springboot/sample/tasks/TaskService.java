@@ -16,5 +16,4 @@ public interface TaskService {
     TaskAttribute patch(UUID id, TaskPatchAttribute taskAttribute);
     void patchAll(List<TaskPatchAllAttribute> tasks);
     void delete(UUID id);
-    void deleteAll(List<UUID> taskIdList);
 }
