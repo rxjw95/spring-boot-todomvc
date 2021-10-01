@@ -73,20 +73,6 @@ public class TaskController {
         return toTaskAttributeResponse(patchedTaskAttribute);
     }
 
-    @PatchMapping
-    void patchAll(@RequestBody final List<TaskPatchAllRequest> taskPatchAllRequest) {
-        final var taskList =
-                taskPatchAllRequest
-                .stream()
-                .map(request -> new TaskPatchAllAttribute(
-                        UUID.fromString(request.getId()),
-                        request.getDetails(),
-                        toTaskStatus(request.getStatus()))
-                ).collect(Collectors.toList());
-
-        taskService.patchAll(taskList);
-    }
-
     @DeleteMapping("/{id}")
     void remove(@PathVariable("id") final String taskIdString) {
         final var taskId = UUID.fromString(taskIdString);

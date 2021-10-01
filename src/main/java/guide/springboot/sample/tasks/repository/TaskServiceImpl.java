@@ -72,16 +72,6 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    @Override
-    public void patchAll(List<TaskPatchAllAttribute> tasks) {
-        var taskEntities = tasks.stream().map(task -> new TaskEntity(
-                task.getId(),
-                task.getDetails(),
-                task.getStatus()
-        )).collect(Collectors.toUnmodifiableList());
-        taskRepository.saveAll(taskEntities);
-    }
-
     static Task toTask(final TaskEntity taskEntity) {
         return new Task(taskEntity.getId(), taskEntity.getDetails(), taskEntity.getStatus());
     }
